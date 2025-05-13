@@ -1,8 +1,8 @@
 package utils
 
-import "reflect"
-
-type Compare func(a, b interface{}) bool
+import (
+	"reflect"
+)
 
 func CompareArr(a, b []interface{}) bool {
 	if len(a) != len(b) {
@@ -21,22 +21,20 @@ func CompareArr(a, b []interface{}) bool {
 	return true
 }
 
-func Arr2Interfaces(arr []int) []interface{} {
-	result := make([]interface{}, 0)
-	for i := 0; i < len(arr); i++ {
-		result = append(result, arr[i])
+// 将数组转换为interface数组。
+func Arr2InterfaceArr(arr interface{}) []interface{} {
+	vals := reflect.ValueOf(arr)
+	if vals.Kind() != reflect.Array && vals.Kind() != reflect.Slice {
+		// fmt.Printf("type error: %s", vals.Kind().String())
+		return nil
+	}
+
+	arrLength := vals.Len()
+	result := make([]interface{}, arrLength)
+	// 数组类型可以作为interface类型，想要转换成interface数组必须逐个元素赋值
+	for i := 0; i < arrLength; i++ {
+		// 必须要使用最后的interface()，Index()返回的类型是reflect.Value，不是传入的数据类型，业务执行操作的时候会panic
+		result[i] = vals.Index(i).Interface()
 	}
 	return result
-}
-
-func CompareIntArr(a, b []int) bool {
-	if len(a) != len(b) {
-		return false
-	}
-	for i := 0; i < len(a); i++ {
-		if a[i] != b[i] {
-			return false
-		}
-	}
-	return true
 }
