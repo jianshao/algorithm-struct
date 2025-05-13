@@ -3,9 +3,9 @@ package sort
 type Less func(a, b interface{}) bool // return true if a < b
 
 // find the right place for the pivot
-func findThePlace(arr []interface{}, start, end int, less Less) {
+func findThePlace(arr []interface{}, start, end int, less Less) int {
 	if start >= end {
-		return
+		return -1
 	}
 
 	pivot := arr[start]
@@ -25,6 +25,7 @@ func findThePlace(arr []interface{}, start, end int, less Less) {
 	arr[left] = pivot
 	findThePlace(arr, start, left-1, less)
 	findThePlace(arr, left+1, end, less)
+	return left
 }
 
 func QSort(arr []interface{}, less Less) {
