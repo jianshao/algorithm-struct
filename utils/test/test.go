@@ -17,11 +17,6 @@ type TestParam struct {
 	ShouldEqual bool
 }
 
-const (
-	ShouldEqual    = true
-	ShouldNotEqual = false
-)
-
 func Test(funcName string, t *testing.T, params []TestParam, target TargetFunc) {
 	for _, param := range params {
 		result := target(param.Input)
