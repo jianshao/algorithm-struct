@@ -4,11 +4,6 @@ import (
 	"reflect"
 )
 
-type TestParams struct {
-	Input  interface{}
-	Expect interface{}
-}
-
 func CompareArr(a, b []interface{}) bool {
 	if len(a) != len(b) {
 		return false
