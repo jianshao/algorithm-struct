@@ -17,16 +17,16 @@ type Trie struct {
 // internal struct
 type trieNode struct {
 	// val is option, no need in some case, such as string match
-	val       interface{}
-	completed bool
-	nexts     []*trieNode
+	val    interface{}
+	isLeaf bool
+	nexts  []*trieNode
 }
 
 func newTrieNode(size int) *trieNode {
 	return &trieNode{
-		completed: false,
-		val:       nil,
-		nexts:     make([]*trieNode, size),
+		isLeaf: false,
+		val:    nil,
+		nexts:  make([]*trieNode, size),
 	}
 }
 
@@ -48,7 +48,7 @@ func (t *Trie) Get(path []interface{}) (interface{}, error) {
 		// curr = next
 		curr = curr.nexts[pos]
 	}
-	if curr.completed {
+	if curr.isLeaf {
 		return curr.val, nil
 	}
 	return nil, errors.New("item not existed")
@@ -67,7 +67,7 @@ func (t *Trie) Add(path []interface{}, val interface{}) error {
 		}
 		curr = curr.nexts[pos]
 	}
-	curr.completed = true
+	curr.isLeaf = true
 	curr.val = val
 	return nil
 }
@@ -82,5 +82,5 @@ func (t *Trie) Remove(path []interface{}) {
 		curr = curr.nexts[pos]
 	}
 	// remove the leaf mark, lazy delete
-	curr.completed = false
+	curr.isLeaf = false
 }
