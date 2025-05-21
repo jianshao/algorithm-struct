@@ -31,9 +31,9 @@ func isValidHeap(h *Heap) error {
 }
 
 // from the bottom to top and replace if need
-func (h *Heap) Add(val interface{}) (bool, error) {
+func (h *Heap) Add(val interface{}) error {
 	if err := isValidHeap(h); err != nil {
-		return false, err
+		return err
 	}
 
 	// need append if no place left
@@ -64,8 +64,8 @@ func (h *Heap) Add(val interface{}) (bool, error) {
 			}
 		}
 	}
-	// fmt.Println(h.heap...)
-	return true, nil
+	// fmt.Printf("add %v: %v", val, h.heap)
+	return nil
 }
 
 // replace the last one to be first one, ensure that the array is fullsize(no leak)
@@ -82,7 +82,6 @@ func (h *Heap) GetTheTop() (interface{}, error) {
 	// update the heap first
 	result := h.heap[0]
 	h.heap[0] = h.heap[h.count-1]
-	h.count--
 
 	// fixed
 	pos, curr := 0, -1
@@ -93,8 +92,11 @@ func (h *Heap) GetTheTop() (interface{}, error) {
 			curr = pos*2 + 1
 		}
 		// check right child, find the bigger one
-		if pos*2+2 < h.count && h.compare(h.heap[pos*2+2], h.heap[pos*2]) > 0 {
-			curr = pos*2 + 2
+		if pos*2+2 < h.count {
+			bigger := h.compare(h.heap[pos*2+2], h.heap[curr])
+			if (h.max && bigger > 0) || (!h.max && bigger < 0) {
+				curr = pos*2 + 2
+			}
 		}
 		// break if no child
 		if curr == -1 {
@@ -102,13 +104,15 @@ func (h *Heap) GetTheTop() (interface{}, error) {
 		}
 
 		// no need to replace if the parent node is the greatest one
-		if h.compare(h.heap[pos], h.heap[curr]) > 1 {
+		bigger := h.compare(h.heap[pos], h.heap[curr])
+		if (h.max && bigger > 0) || (!h.max && bigger < 0) {
 			break
 		}
 		// replace
 		h.heap[pos], h.heap[curr] = h.heap[curr], h.heap[pos]
 		pos = curr
 	}
+	h.count--
 	// fmt.Println(result)
 	// fmt.Println(h.heap...)
 	return result, nil
