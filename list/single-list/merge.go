@@ -1,12 +1,12 @@
 package singlelist
 
 // merge all the nodes to dest with given ordered lists. it must be same type list
-func Merge(list1 *SingleListHead, list2 *SingleListHead) *SingleListHead {
+func Merge(list1 *SingleList, list2 *SingleList) *SingleList {
 	if list1 == nil && list2 == nil {
 		return nil
 	}
 
-	var dest *SingleListHead
+	var dest *SingleList
 	if list1 != nil {
 		dest = Init(list1.compare)
 	} else {

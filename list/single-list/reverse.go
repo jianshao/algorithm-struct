@@ -1,7 +1,7 @@
 package singlelist
 
-func Reverse(singleList *SingleListHead) {
-	root := singleList.head
+func (l *SingleList) Reverse() {
+	root := l.head
 	// return if less than 2 nodes
 	if root == nil || root.next == nil {
 		return
@@ -18,5 +18,5 @@ func Reverse(singleList *SingleListHead) {
 	// begin from second node, the root node will be the last node, we should set it's next to nil
 	root.next = nil
 	// head, tail exchange
-	singleList.head, singleList.tail = singleList.tail, singleList.head
+	l.head, l.tail = l.tail, l.head
 }
