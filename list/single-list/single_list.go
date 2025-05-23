@@ -31,7 +31,13 @@ func initNode(val interface{}) *singleListNode {
 }
 
 // add a node to the last
-func (h *SingleListHead) Append(val interface{}) {
+func (h *SingleListHead) Append(val interface{}) error {
+	if val == nil {
+		return errors.New("val can not be nil")
+	}
+	if h == nil {
+		return errors.New("init first")
+	}
 	newNode := initNode(val)
 	if h.head == nil {
 		h.head = newNode
@@ -41,10 +47,17 @@ func (h *SingleListHead) Append(val interface{}) {
 		h.tail = newNode
 	}
 	h.count++
+	return nil
 }
 
 // add a node to be first node
-func (h *SingleListHead) AddForword(val interface{}) {
+func (h *SingleListHead) AddForword(val interface{}) error {
+	if val == nil {
+		return errors.New("val can not be nil")
+	}
+	if h == nil {
+		return errors.New("init first")
+	}
 	newNode := initNode(val)
 	if h.head == nil {
 		h.head = newNode
@@ -54,6 +67,7 @@ func (h *SingleListHead) AddForword(val interface{}) {
 		h.head = newNode
 	}
 	h.count++
+	return nil
 }
 
 // remove a node, it's val = val
